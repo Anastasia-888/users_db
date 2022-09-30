@@ -1,7 +1,6 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,10 +9,6 @@ import java.util.List;
 import static jm.task.core.jdbc.util.Util.getConnection;
 
 public class UserDaoJDBCImpl implements UserDao {
-
-    public UserDaoJDBCImpl() {
-
-    }
 
     public void createUsersTable() {
         try (Connection connection = getConnection();
@@ -43,7 +38,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO users (name, lastname, age) VALUES (?, ?, ?)")) {
+                     .prepareStatement("INSERT INTO `users` (name, lastname, age) VALUES (?, ?, ?)")) {
 
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
@@ -58,7 +53,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("DELETE FROM users WHERE id=?")) {
+                     .prepareStatement("DELETE FROM `users` WHERE id=?")) {
 
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -72,7 +67,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()
         ) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM `users`");
             while (resultSet.next()) {
                 final User user = new User();
                 user.setId(resultSet.getLong("id"));
@@ -92,7 +87,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()
         ) {
-            statement.executeUpdate("DELETE FROM users");
+            statement.executeUpdate("DELETE FROM `users`");
         } catch (SQLException e) {
             e.printStackTrace();
         }
